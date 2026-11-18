@@ -1,6 +1,6 @@
 # Daryl: Movement and Dodging
 
-No scripts in this folder yet. A first starter set (Health, Hurtbox, DashController, ArenaBounds, HealthBar) is staged with Muse and comes in through a pull request after Jeff tests it in the Unity Editor on Daryl's machine. Nothing untested goes to main.
+The starter implementation is on this review branch, with ten passing Unity Editor Play Mode tests on Windows. It is not merged to main. BodyHurtboxFollow additionally keeps the body hurtbox upright and under the tracked head. Real-headset/controller validation is still required.
 
 Planned scripts:
 

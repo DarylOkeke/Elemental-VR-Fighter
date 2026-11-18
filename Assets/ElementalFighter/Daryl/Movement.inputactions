@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "name": "Movement",
+    "maps": [
+        {
+            "name": "Movement",
+            "id": "0e9d7f88-80cc-432d-b55c-cc639063df5f",
+            "actions": [
+                {
+                    "name": "Dash",
+                    "type": "Button",
+                    "id": "b0fab3c3-a0b3-4cd3-8aff-a6c17796be68",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b1bd4bba-43d2-49c5-8ce4-5e6899dd0764",
+                    "path": "<XRController>{LeftHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3386c422-1e12-4bfa-a9d5-edc4622bd930",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

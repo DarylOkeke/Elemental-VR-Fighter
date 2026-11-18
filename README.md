@@ -6,7 +6,7 @@ Team: Daryl Okeke, Giovanni Vera, Ethan Olvera, Suhaas Kowthalam Jois. Mentor: J
 
 ## Status
 
-Skeleton only. This repo currently holds the folder layout, gitignore and gitattributes, and the per-teammate plans. The Unity project, shared scene, and prefabs come next, built and tested in the Unity Editor on Daryl's machine (Jeff). No scripts are in the repo yet; Daryl's starter scripts are staged and land through a pull request after an Editor test.
+This branch adds the Unity project, shared arena scene, four connected prefabs, and Daryl's movement/health starter. Unity Editor compilation and ten Play Mode tests pass on Daryl's Windows PC. Main remains the script-free skeleton until Daryl approves a merge. Headset, controller, multiplayer and Android build testing are not yet complete. The three teammate prefabs are deliberately empty extension points, not implemented mechanics.
 
 ## Unity setup
 
@@ -48,3 +48,19 @@ One branch per mechanic, named after the owner and mechanic. Keep PRs small and 
 - Rescoped Design Docs: 3+ comments or suggested edits per teammate on the Technical doc, doc shared Anyone with the link as Commenter.
 - Individual Progress Demo: in-engine demo posted to the Discord thread.
 - Merge Requests: merged PR screenshots showing the purple merged logo.
+
+## Open and test
+
+Open Assets/ElementalFighter/Shared/Scenes/ElementalArena.unity. The four named root objects are connected prefab instances. Daryl's rig includes an XR Origin, head/body trigger hurtboxes, camera-relative health HUD, and dash. Dash uses left-controller primary button or Space for Editor smoke tests; the team must confirm this provisional mapping before integration. The movement tests are in Assets/ElementalFighter/Daryl/Tests and run with Window > General > Test Runner > PlayMode.
+
+The hit event is Hurtbox.OnHit (UnityEvent<float, Vector3>), with damage and world hit position. Health.OnHealthChanged and Health.OnKO are public event accessors. Every HealthBar must reference its own player's Health explicitly. Scene scaffolding does not implement network authority, projectile collision policy, cooldown UI, or opponent logic.
+
+UnityYAMLMerge is configured locally on the setup PC. Each teammate must configure Git's unityyamlmerge driver to their Editor's UnityYAMLMerge executable; .gitattributes alone cannot install a local merge driver. Keep .meta files with every asset.
+
+The initial per-teammate READMEs were committed by Daryl during setup; they are not evidence of separate teammate contributions. Each teammate still needs their own meaningful committed file and review activity for the course requirements.
+
+## Known integration limits
+
+ArenaBounds constrains the XR Origin, not the physical tracked head. Keep the headset boundary active and use a clear play area; this is not a physical-safety boundary. Hurtboxes are triggers; projectile trigger-based collision needs a Rigidbody on at least one side, or explicit physics queries that call ApplyHit. No networking or authoritative damage arbitration has been chosen. The desktop preview can render without a headset, but OpenXR reports XR_ERROR_RUNTIME_UNAVAILABLE on this PC without an active runtime. Real controller/headset behavior and an Android build remain unverified.
+
+Test coverage includes the generated prefab's Space action, using a synthetic keyboard with test-only headless focus handling; those input settings are restored afterward. This is not a hardware controller test. The scene and full health HUD were also visually checked in the interactive Editor. Each DashController owns a cloned action instance so disabling one rig does not disable another rig's input; Ethan still must disable local input on non-owned network replicas.
