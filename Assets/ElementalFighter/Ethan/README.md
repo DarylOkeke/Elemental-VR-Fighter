@@ -1,5 +1,5 @@
 # Ethan: Multiplayer Versus
 
-Owner folder. Networked session, synced combat, best-of-three round flow. Fallback if networking runs long: AI opponent.
+Ethan's part: sessions, synced combat, and best-of-three rounds. The shared prefab is a placeholder for now.
 
-Open decision: Photon PUN vs Unity Netcode plus Relay. Pick early with a small prototype: two players connect, see each other move, one hit registers exactly once, same health and round result on both sides.
+Photon PUN vs Netcode + Relay is still Ethan's call. First test: two players connect, see each other move, and agree on each hit, health value, and round result. Only the local player's rig should accept input.

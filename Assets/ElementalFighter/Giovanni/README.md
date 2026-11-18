@@ -1,5 +1,5 @@
 # Giovanni: Elemental Bending
 
-Owner folder. Gesture recognition, element projectiles, damage on contact, element visuals.
+Giovanni's part: gesture recognition, elemental projectiles, damage, and effects. The shared prefab is a placeholder for now.
 
-Contract: projectiles deal damage through Hurtbox.ApplyHit(damage, hitPoint) or Health.TakeDamage(). Do not write to Health fields directly. Keep combat logic in separate components so Ethan can sync it.
+Projectiles should call `Hurtbox.ApplyHit(damage, hitPoint)` rather than changing health fields directly. Keep combat separate from networking so Ethan can sync it.

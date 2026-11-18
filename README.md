@@ -1,66 +1,51 @@
 # Elemental VR Fighter
 
-CS 417 open-ended project. Multiplayer PvP 1v1 arena battler: Avatar-style elemental benders, gesture casting, physical dodging, best-of-three rounds.
+Our CS 417 project: a 1v1 VR elemental arena fighter with gesture casting, physical dodging, and best-of-three rounds.
 
 Team: Daryl Okeke, Giovanni Vera, Ethan Olvera, Suhaas Kowthalam Jois. Mentor: Julia Davis.
 
-## Status
+## Current progress
 
-This branch adds the Unity project, shared arena scene, four connected prefabs, and Daryl's movement/health starter. Unity Editor compilation and ten Play Mode tests pass on Daryl's Windows PC. Main remains the script-free skeleton until Daryl approves a merge. Headset, controller, multiplayer and Android build testing are not yet complete. The three teammate prefabs are deliberately empty extension points, not implemented mechanics.
+My movement and health starter, the Unity project, and the shared scene are in [PR #1](https://github.com/DarylOkeke/Elemental-VR-Fighter/pull/1), on `daryl/unity-scaffold`. Main is still the script-free skeleton. The other three prefabs are placeholders for my teammates' mechanics.
 
-## Unity setup
+Unity compilation and all 10 Play Mode tests pass, including a synthetic-input dash test on the actual prefab. Headset, controller, Android, and multiplayer testing are still pending.
 
-Unity 6000.5.6f1, URP, OpenXR 1.17.1, XR Interaction Toolkit 3.5.1, Input System 1.20. Same stack as the course MP repos. Open the project folder in Unity Hub with 6000.5.6f1.
+## Open the project
 
-## Folder layout
+Check out `daryl/unity-scaffold` and open it in Unity Hub with **6000.5.6f1**. We use URP, OpenXR 1.17.1, XR Interaction Toolkit 3.5.1, and Input System 1.20.0, matching our MP stack.
 
-Assets/ElementalFighter/
-- Daryl/ : Movement and Dodging (hurtbox, health, dash, arena bounds, health bar)
-- Giovanni/ : Elemental Bending (gesture recognition, projectiles, damage, effects)
-- Suhaas/ : Combos and Ultimate Attacks (combo counter, ultimate meter, combo UI)
-- Ethan/ : Multiplayer Versus (networked session, synced combat, rounds)
-- Shared/Scenes/ : the shared arena scene every teammate's prefab lives in
+Open `Assets/ElementalFighter/Shared/Scenes/ElementalArena.unity`. Run tests from **Window > General > Test Runner > PlayMode**.
 
-Each teammate works in their own folder and opens a pull request. Another teammate reviews before merging to main.
+## Team folders and prefabs
 
-## Shared scene prefabs
+Everything lives under `Assets/ElementalFighter/`:
 
-The shared scene holds one prefab per teammate:
+| Folder | Responsibility | Shared scene prefab |
+| --- | --- | --- |
+| Daryl/ | My movement, dodging, and health | Daryl_MovementRig |
+| Giovanni/ | Gesture casting and elemental combat | Giovanni_ElementalCombat |
+| Suhaas/ | Combos and ultimates | Suhaas_CombosUltimates |
+| Ethan/ | Multiplayer and rounds | Ethan_MultiplayerVersus |
+| Shared/Scenes/ | Our shared arena | |
 
-- Daryl_MovementRig : player root, hurtbox, health, dash, arena bounds
-- Giovanni_ElementalCombat : gesture recognition and projectile spawning
-- Suhaas_CombosUltimates : combo counter, ultimate meter, combo UI
-- Ethan_MultiplayerVersus : network session, synced combat, round flow
+We each work in our own folder and open small PRs for review. I'll approve this starter before it goes into main. Keep asset `.meta` files with their assets. Each teammate needs to configure their local UnityYAMLMerge driver.
 
-## Shared contracts
+## Integration
 
-Health and damage: Daryl's Health component owns hit points. Anything that deals damage calls TakeDamage() on it, or calls ApplyHit() on a Hurtbox. Giovanni's projectiles and Suhaas's combo counter listen for hit events from these components, so keep combat logic in separate components Ethan can sync.
+- Send hits through `Hurtbox.ApplyHit(damage, hitPoint)`. `OnHit` carries damage and world position. Don't modify health fields directly.
+- `Health.OnHealthChanged` and `Health.OnKO` expose health events. Each `HealthBar` needs its own player's `Health`.
+- Dash is provisionally left-controller primary button or Space. We still need to agree on the final mapping.
+- Bounds clamp the XR Origin, not the tracked headset. Keep the headset safety boundary active.
+- Trigger collisions need a Rigidbody on at least one side, or a physics query that calls `ApplyHit`.
+- Ethan owns the networking choice and disabling input on remote-player replicas. No networking is implemented yet.
 
-Hit event format: a hit is a damage amount plus a hit position. Hurtbox.ApplyHit(damage, hitPoint) is the single entry point. Do not reach into Health fields directly from other mechanics.
+## WIP checklist
 
-## Branch and PR plan
+Due Friday Nov 20 at 7pm, with no late extension:
 
-One branch per mechanic, named after the owner and mechanic. Keep PRs small and merge early. Screenshots of merged PRs are the Merge Requests extra credit evidence, so do not squash away the merge record.
+- Group Git: Unity project, shared scene with four prefabs, and a committed file from each teammate.
+- Design docs: 3+ comments or suggestions per teammate; Technical doc shared as Anyone with the link / Commenter.
+- Individual demo: in-engine video in the Discord thread.
+- Merge requests: screenshots showing merged PRs.
 
-## WIP extra credit checklist (due Fri Nov 20, 7pm, no late extension)
-
-- Group Git: repo with Unity project, gitignore and gitattributes, shared scene with 4 prefabs, one committed file per teammate.
-- Rescoped Design Docs: 3+ comments or suggested edits per teammate on the Technical doc, doc shared Anyone with the link as Commenter.
-- Individual Progress Demo: in-engine demo posted to the Discord thread.
-- Merge Requests: merged PR screenshots showing the purple merged logo.
-
-## Open and test
-
-Open Assets/ElementalFighter/Shared/Scenes/ElementalArena.unity. The four named root objects are connected prefab instances. Daryl's rig includes an XR Origin, head/body trigger hurtboxes, camera-relative health HUD, and dash. Dash uses left-controller primary button or Space for Editor smoke tests; the team must confirm this provisional mapping before integration. The movement tests are in Assets/ElementalFighter/Daryl/Tests and run with Window > General > Test Runner > PlayMode.
-
-The hit event is Hurtbox.OnHit (UnityEvent<float, Vector3>), with damage and world hit position. Health.OnHealthChanged and Health.OnKO are public event accessors. Every HealthBar must reference its own player's Health explicitly. Scene scaffolding does not implement network authority, projectile collision policy, cooldown UI, or opponent logic.
-
-UnityYAMLMerge is configured locally on the setup PC. Each teammate must configure Git's unityyamlmerge driver to their Editor's UnityYAMLMerge executable; .gitattributes alone cannot install a local merge driver. Keep .meta files with every asset.
-
-The initial per-teammate READMEs were committed by Daryl during setup; they are not evidence of separate teammate contributions. Each teammate still needs their own meaningful committed file and review activity for the course requirements.
-
-## Known integration limits
-
-ArenaBounds constrains the XR Origin, not the physical tracked head. Keep the headset boundary active and use a clear play area; this is not a physical-safety boundary. Hurtboxes are triggers; projectile trigger-based collision needs a Rigidbody on at least one side, or explicit physics queries that call ApplyHit. No networking or authoritative damage arbitration has been chosen. The desktop preview can render without a headset, but OpenXR reports XR_ERROR_RUNTIME_UNAVAILABLE on this PC without an active runtime. Real controller/headset behavior and an Android build remain unverified.
-
-Test coverage includes the generated prefab's Space action, using a synthetic keyboard with test-only headless focus handling; those input settings are restored afterward. This is not a hardware controller test. The scene and full health HUD were also visually checked in the interactive Editor. Each DashController owns a cloned action instance so disabling one rig does not disable another rig's input; Ethan still must disable local input on non-owned network replicas.
+The setup READMEs don't count as separate teammate contributions. We still need everyone's own commits and reviews.
