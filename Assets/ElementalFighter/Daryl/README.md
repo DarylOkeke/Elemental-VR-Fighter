@@ -1,19 +1,16 @@
-# Daryl: Movement and Dodging
+# My movement and dodging work
 
-No scripts in this folder yet. A first starter set (Health, Hurtbox, DashController, ArenaBounds, HealthBar) is staged with Muse and comes in through a pull request after Jeff tests it in the Unity Editor on Daryl's machine. Nothing untested goes to main.
+My starter is in [PR #1](https://github.com/DarylOkeke/Elemental-VR-Fighter/pull/1), not main yet. It includes:
 
-Planned scripts:
+- `Health`: damage, healing, reset, and health/KO events.
+- `Hurtbox`: head/body hits forwarded to health, with damage and hit-position events.
+- `DashController`: forward dash, cooldown, and a separate input action per rig.
+- `ArenaBounds`: keeps the player root inside the arena.
+- `HealthBar`: displays the assigned player's health.
+- `BodyHurtboxFollow`: keeps the body collider upright beneath the tracked head.
 
-- Health: owns hit points. TakeDamage(), Heal(), ResetHealth(). Fires onHealthChanged and onKO events. This is the shared health component the other mechanics call.
-- Hurtbox: attach to a trigger collider on the head and body. Projectiles call ApplyHit(damage, hitPoint). Forwards to Health and fires onHit for feedback and combo listeners.
-- DashController: quick dash with a cooldown. Wire playerRoot (the XR Origin or player root) and a dash InputAction in the Inspector. Dashes in the camera facing direction, flattened to the ground plane.
-- ArenaBounds: clamps the player root inside a rectangle. Set center and size in the Inspector to match the arena floor.
-- HealthBar: skeletal UI readout. Wire a Health and a UI Slider. Enough for a first in-engine demo.
+The shared prefab wires these together with an XR Origin and health HUD. Dash is currently Space or the left controller's primary button.
 
-Wiring checklist for the shared scene:
+All 10 Play Mode tests pass, including the prefab's dash binding with synthetic keyboard input. The scene and full health HUD also render in the Editor. Actual keyboard input in the interactive Editor wasn't verified, and I still need headset/controller and Android testing. OpenXR currently reports `XR_ERROR_RUNTIME_UNAVAILABLE` without an active runtime.
 
-1. Player root with Health, DashController, ArenaBounds.
-2. Head and body trigger colliders with Hurtbox, Health assigned or found from a parent.
-3. A Canvas with a Slider and HealthBar wired to the player's Health.
-4. Dash InputAction assigned on DashController. Agree on the shared input map with the team first so a casting or throwing motion never triggers a dash by accident.
-5. Room-scale dodging is physical: leaning and ducking move the headset and the hurtbox with it. No extra code needed for that part.
+Bounds only clamp the rig's origin, not physical room-scale movement. The headset safety boundary still matters.

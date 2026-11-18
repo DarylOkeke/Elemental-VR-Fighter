@@ -1,5 +1,5 @@
-# Suhaas: Combos and Ultimate Attacks
+# Suhaas: Combos and Ultimates
 
-Owner folder. Combo counter, ultimate meter, combo UI.
+Suhaas's part: combo counter, ultimate meter, and combo UI. The shared prefab is a placeholder for now.
 
-Contract: listen for hit events from Hurtbox (onHit) and Health (onHealthChanged). Agree on the hit-event format with Giovanni early: damage amount plus hit position, through Hurtbox.ApplyHit().
+Use `Hurtbox.OnHit` for damage and world hit position, and `Health.OnHealthChanged` for health updates. Coordinate hit handling with Giovanni.
