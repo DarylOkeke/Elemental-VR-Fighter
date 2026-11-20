@@ -1,0 +1,1 @@
+{"name":"ElementalFighter.Daryl.Tests","references":["ElementalFighter.Daryl","Unity.InputSystem","Unity.ugui"],"optionalUnityReferences":["TestAssemblies"],"defineConstraints":["UNITY_INCLUDE_TESTS"]}
