@@ -8,3 +8,5 @@ Goal Over Thanksgiving Break:
 
 - Have Basic Connection code up and running
 - Have Basic variable shared and agreed upon across 2 different clients
+
+- Had to commit again because my first commit didn't have my username lol
