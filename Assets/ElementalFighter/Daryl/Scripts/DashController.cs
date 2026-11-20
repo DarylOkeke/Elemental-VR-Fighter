@@ -14,6 +14,8 @@ public class DashController : MonoBehaviour
     private float cooldownLeft;
     private bool dashing;
     private InputAction activeDashAction;
+    public float CooldownRemaining => cooldownLeft;
+    public bool IsDashing => dashing;
     private void OnEnable()
     {
         if (dashAction == null || dashAction.action == null) return;
